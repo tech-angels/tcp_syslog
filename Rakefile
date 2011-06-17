@@ -42,5 +42,10 @@ end
 
 task :default => :test
 
+Rake::TestTask.new(:benchmark) do |bm|
+  bm.libs << 'lib' << 'test'
+  bm.pattern = 'test/**/*_benchmark.rb'
+  bm.verbose = true
+end
 require 'yard'
 YARD::Rake::YardocTask.new

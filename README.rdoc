@@ -1,9 +1,27 @@
 = tcp_syslog
 
-Description goes here.
+Rails TCP syslog logger.
+This logger sends logs to syslog using TCP instead of UDP.
+This is much less efficient than logging to file, but required sometimes in large architectures.
+
+== Usage
+
+=== Installation
+
+Use bundle to install :
+
+    gem 'tcp_syslog'
+
+=== Configuration
+
+Add this line to your rails configuration :
+
+    config.logger = TcpSyslog.new(:progname => 'your_rails_app_name')
+
+Options are detailled in doc.
 
 == Contributing to tcp_syslog
- 
+
 * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet
 * Check out the issue tracker to make sure someone already hasn't requested it and/or contributed it
 * Fork the project
@@ -14,6 +32,6 @@ Description goes here.
 
 == Copyright
 
-Copyright (c) 2011 Philippe Lafoucrière. See LICENSE.txt for
+Copyright (c) 2011 Tech-Angels SAS. See LICENSE.txt for
 further details.
 
