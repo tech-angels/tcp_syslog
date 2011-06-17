@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Philippe Lafoucri\303\250re"]
   s.date = %q{2011-06-17}
-  s.description = %q{TODO: longer description of your gem}
+  s.description = %q{Rails syslog logger using TCP instead of UDP}
   s.email = %q{philippe.lafoucriere@gmail.com}
   s.extra_rdoc_files = [
     "LICENSE.txt",
@@ -25,6 +25,7 @@ Gem::Specification.new do |s|
     "README.rdoc",
     "Rakefile",
     "lib/tcp_syslog.rb",
+    "tcp_syslog.gemspec",
     "test/helper.rb",
     "test/tcp_syslog_benchmark.rb",
     "test/test_tcp_syslog.rb"
