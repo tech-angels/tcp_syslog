@@ -54,7 +54,7 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<rr>, [">= 0"])
       s.add_development_dependency(%q<i18n>, [">= 0"])
       s.add_development_dependency(%q<SystemTimer>, [">= 0"])
-      s.add_runtime_dependency(%q<activesupport>, [">= 3.0.9"])
+      s.add_runtime_dependency(%q<activesupport>, [">= 3.0.8"])
       s.add_runtime_dependency(%q<SystemTimer>, [">= 1.2.3"])
     else
       s.add_dependency(%q<shoulda>, [">= 0"])
@@ -66,7 +66,7 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<rr>, [">= 0"])
       s.add_dependency(%q<i18n>, [">= 0"])
       s.add_dependency(%q<SystemTimer>, [">= 0"])
-      s.add_dependency(%q<activesupport>, [">= 3.0.9"])
+      s.add_dependency(%q<activesupport>, [">= 3.0.8"])
       s.add_dependency(%q<SystemTimer>, [">= 1.2.3"])
     end
   else
@@ -79,7 +79,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<rr>, [">= 0"])
     s.add_dependency(%q<i18n>, [">= 0"])
     s.add_dependency(%q<SystemTimer>, [">= 0"])
-    s.add_dependency(%q<activesupport>, [">= 3.0.9"])
+    s.add_dependency(%q<activesupport>, [">= 3.0.8"])
     s.add_dependency(%q<SystemTimer>, [">= 1.2.3"])
   end
 end
