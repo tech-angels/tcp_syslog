@@ -16,7 +16,7 @@ Jeweler::Tasks.new do |gem|
   gem.homepage = "http://github.com/tech-angels/tcp_syslog"
   gem.license = "MIT"
   gem.summary = %Q{Send logs to syslog using TCP instead of UDP}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.description = %Q{Rails syslog logger using TCP instead of UDP}
   gem.email = "philippe.lafoucriere@gmail.com"
   gem.authors = ["Philippe Lafoucrière"]
   gem.version = '1.0.0'
