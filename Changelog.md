@@ -1,3 +1,7 @@
+## 1.0.3 (2011-11-26)
+
+* Added SSL support with peer verification
+
 ## 1.0.2 (2011-06-29)
 
 * Relax version requirements for active_support (Yawn)
