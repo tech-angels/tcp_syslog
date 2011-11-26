@@ -19,7 +19,7 @@ Jeweler::Tasks.new do |gem|
   gem.description = %Q{Rails syslog logger using TCP instead of UDP}
   gem.email = "philippe.lafoucriere@gmail.com"
   gem.authors = ["Philippe Lafoucrière"]
-  gem.version = '1.0.2'
+  gem.version = '1.0.3'
   # Include your dependencies below. Runtime dependencies are required when using your gem,
   # and development dependencies are only needed for development (ie running rake tasks, tests, etc)
   #  gem.add_runtime_dependency 'jabber4r', '> 0.1'

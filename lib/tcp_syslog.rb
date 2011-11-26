@@ -185,7 +185,7 @@ class TcpSyslog < ActiveSupport::BufferedLogger
       msg.split("\n").each do |line|
         write_on_socket(severity, line)
       end
-    rescue Errno::ECONNREFUSED, Errno::EPIPE, Timeout::Error  => e
+    rescue Errno::ECONNREFUSED, Errno::ECONNRESET, Errno::EPIPE, Timeout::Error, OpenSSL::SSL::SSLError => e
       # can't log anything, stop trying
       @socket[Thread.current] = nil
     end
