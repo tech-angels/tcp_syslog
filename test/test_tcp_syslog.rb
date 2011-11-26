@@ -14,6 +14,7 @@ class TestTcpSyslog < ActiveSupport::TestCase
       assert_equal 'rails', @logger.progname
       assert_equal 1, @logger.auto_flushing
       assert_equal Logger::DEBUG, @logger.level
+      assert_equal false, @logger.ssl?
     end
 
     should "have defined debug, info, warn, error, fatal methods" do
@@ -26,16 +27,35 @@ class TestTcpSyslog < ActiveSupport::TestCase
 
     context "on add message" do
       setup do
-        message = "This message to be sent to syslog"
-        mock.proxy(@logger).flush
-        mock.proxy(@logger).log(Logger::INFO, message)
-        mock.proxy(@logger).write_on_socket(Logger::INFO, message)
-        @logger.add(Logger::INFO, message)
+        @message = "This message to be sent to syslog"
       end
 
-      should "have sent the message to syslog" do
+      should "have sent the message to syslog using plain TCP" do
+        mock.proxy(TCPSocket).new(@logger.host, @logger.port)
+        dont_allow(OpenSSL::SSL::SSLSocket).new
+        mock.proxy(@logger).flush
+        mock.proxy(@logger).log(Logger::INFO, @message)
+        mock.proxy(@logger).write_on_socket(Logger::INFO, @message)
+        @logger.add(Logger::INFO, @message)
         RR.verify
       end
+
+      should "have sent the message to syslog using SSL with peer verification" do
+        @logger = TcpSyslog.new(
+          :ssl => {
+            :cert => "/path/to/cert",
+            :key => "/path/to/key",
+            :ca_file => "/path/to/ca_file"
+          }
+        )
+        mock(@logger).ssl_socket{mock!.write(anything)}
+        mock.proxy(@logger).flush
+        mock.proxy(@logger).log(Logger::INFO, @message)
+        mock.proxy(@logger).write_on_socket(Logger::INFO, @message)
+        @logger.add(Logger::INFO, @message)
+        RR.verify
+      end
+
     end
   end
 
