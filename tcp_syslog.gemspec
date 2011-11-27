@@ -4,14 +4,14 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = %q{tcp_syslog}
+  s.name = "tcp_syslog"
   s.version = "1.0.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Philippe Lafoucri\303\250re"]
-  s.date = %q{2011-06-29}
-  s.description = %q{Rails syslog logger using TCP instead of UDP}
-  s.email = %q{philippe.lafoucriere@gmail.com}
+  s.date = "2011-11-27"
+  s.description = "Rails syslog logger using TCP instead of UDP"
+  s.email = "philippe.lafoucriere@gmail.com"
   s.extra_rdoc_files = [
     "LICENSE.txt",
     "README.rdoc"
@@ -29,11 +29,11 @@ Gem::Specification.new do |s|
     "test/tcp_syslog_benchmark.rb",
     "test/test_tcp_syslog.rb"
   ]
-  s.homepage = %q{http://github.com/tech-angels/tcp_syslog}
+  s.homepage = "http://github.com/tech-angels/tcp_syslog"
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.5.2}
-  s.summary = %q{Send logs to syslog using TCP instead of UDP}
+  s.rubygems_version = "1.8.10"
+  s.summary = "Send logs to syslog using TCP instead of UDP"
   s.test_files = [
     "test/helper.rb",
     "test/tcp_syslog_benchmark.rb",
