@@ -2,7 +2,7 @@ require 'socket'
 require 'syslog'
 require 'logger'
 require 'system_timer'
-
+require 'openssl'
 # TcpSyslog is used are a dead-simple replacement for
 # syslog ruby libs. None of them is able to send logs
 # to a remote server, and even less in TCP.
@@ -69,11 +69,15 @@ class TcpSyslog < ActiveSupport::BufferedLogger
   # ** +facility+ : defaults to user
   # ** +progname+ : defaults to 'rails'
   # ** +auto_flushing+ : number of messages to buffer before flushing
+  # ** +ssl+ : defaults to nil
+  # *** +cert : "/path/to/cert"
+  # *** +key : "/path/to/key"
+  # *** +ca_file : "/path/to/ca_file"
   #
   def initialize(options = {})
     @level = LOGGER_LEVEL_MAP[options[:level]] || Logger::DEBUG
     @host = options[:host] || 'localhost'
-    @port = options[:port] = '514'
+    @port = options[:port] || '514'
     @facility = options[:facility] || Syslog::LOG_USER
     @progname = options[:progname] || 'rails'
     @buffer = Hash.new { |h,k| h[k] = [] }
@@ -81,6 +85,7 @@ class TcpSyslog < ActiveSupport::BufferedLogger
     @auto_flushing = options[:auto_flushing] || 1
     @local_ip = local_ip
     @remove_ansi_colors = options[:remove_ansi_colors] || true
+    @ssl = options[:ssl]
     return if defined? SYSLOG
     self.class.const_set :SYSLOG, true
   end
@@ -121,11 +126,35 @@ class TcpSyslog < ActiveSupport::BufferedLogger
   end
 
   def socket
-    @socket[Thread.current] ||= TCPSocket.new(@host, @port)
+    @socket[Thread.current] ||= new_socket
   end
 
+  def ssl?
+    !@ssl.nil?
+  end
+  
   protected
-
+  
+  def new_socket
+    ssl? ? ssl_socket : tcp_socket
+  end
+  
+  def tcp_socket
+    TCPSocket.new(@host, @port)
+  end
+  
+  def ssl_socket
+    ssl_context = OpenSSL::SSL::SSLContext.new
+    ssl_context.cert = OpenSSL::X509::Certificate.new(File.open(@ssl[:cert]))
+    ssl_context.key = OpenSSL::PKey::RSA.new(File.open(@ssl[:key]))
+    ssl_context.verify_mode = OpenSSL::SSL::VERIFY_PEER
+    ssl_context.ca_file = @ssl[:ca_file]
+    ssl_socket = OpenSSL::SSL::SSLSocket.new(tcp_socket, ssl_context)
+    ssl_socket.sync_close = true
+    ssl_socket.connect
+    ssl_socket
+  end
+  
   # Clean up messages so they're nice and pretty.
   def clean(message)
     message = message.to_s.dup
@@ -156,7 +185,7 @@ class TcpSyslog < ActiveSupport::BufferedLogger
       msg.split("\n").each do |line|
         write_on_socket(severity, line)
       end
-    rescue Errno::ECONNREFUSED, Errno::EPIPE, Timeout::Error  => e
+    rescue Errno::ECONNREFUSED, Errno::ECONNRESET, Errno::EPIPE, Timeout::Error, OpenSSL::SSL::SSLError => e
       # can't log anything, stop trying
       @socket[Thread.current] = nil
     end
